@@ -32,14 +32,15 @@
     <div class="jumbotron">
       <h1>Facebook Feed Generator</h1>
       <p class="lead">
-        This app can help people to generate their facebook feed link by simply input the URL in just 2 steps!
+        This app can help you to generate their facebook feed link by simply input the URL in just 2 steps!
       </p>
       <ol>
         <li>
           <label>Facebook URL
-            <input type="text" name="facebook_url" value="" ng-model="facebook_url">
+            <input type="text" name="facebook_url" placeholder="Enter URL Here!" ng-change="facebookURLChanged(facebook_url)" ng-model="facebook_url">
             <a class="btn btn-success" ng-click="getGraph(facebook_url)">Get Graph</a>
           </label>
+            <span ng-show="facebook_id"><label>Facebook ID</label> {{facebook_id}}</span>
         </li>
         <!-- <li class="">
           <label>Generate
@@ -47,11 +48,13 @@
           </label>
         </li> -->
         <li class="">
-          <label>Result:: Facebook ID: {{facebook_id}}
-            <input type="text" name="feed_url" value="" ng-value="feed_url">
-          </label>
-          <a class="btn btn-success" ng-click="">Go to Feedly</a>
-          <a class="btn btn-success" id="copy-button" data-clipboard-text="{{feed_url}}" title="Click to copy me.">Copy to Clipboard</a>
+          <div>
+            <label>Facebook Feed Link
+              <input type="text" name="feed_url" value="" ng-value="feed_url">
+            </label>
+            <a class="btn btn-success" ng-href="http://feedly.com/i/subscription/feed/{{feed_url}}" target="_blank">Subscribe in Feedly</a>
+            <a class="btn btn-success" id="copy-button" data-clipboard-text="{{feed_url}}" title="Click to copy me.">Copy to Clipboard</a>
+          </div>
         </li>
       </ol>
     </div>
