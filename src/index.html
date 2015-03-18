@@ -37,7 +37,8 @@
       <ol>
         <li>
           <label>Facebook URL
-            <input type="text" name="facebook_url" value="">
+            <input type="text" name="facebook_url" value="" ng-model="facebook_url">
+            <a class="btn btn-success" ng-click="getGraph(facebook_url)">Get Graph</a>
           </label>
         </li>
         <!-- <li class="">
@@ -46,13 +47,11 @@
           </label>
         </li> -->
         <li class="">
-          <label>Result
-            <input type="text" name="facebook_url" value="">
+          <label>Result:: Facebook ID: {{facebook_id}}
+            <input type="text" name="feed_url" value="" ng-value="feed_url">
           </label>
-          <p>
-            <a class="btn btn-success" ng-click="">Go to Feedly</a>
-            <a class="btn btn-success" id="copy-button" data-clipboard-text="Copy Me!" title="Click to copy me." ng-click="copy('hello')">Copy to Clipboard</a>
-          </p>
+          <a class="btn btn-success" ng-click="">Go to Feedly</a>
+          <a class="btn btn-success" id="copy-button" data-clipboard-text="{{feed_url}}" title="Click to copy me.">Copy to Clipboard</a>
         </li>
       </ol>
     </div>
