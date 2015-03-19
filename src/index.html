@@ -40,7 +40,8 @@
             <input type="text" name="facebook_url" placeholder="Enter URL Here!" ng-change="facebookURLChanged(facebook_url)" ng-model="facebook_url">
             <a class="btn btn-success" ng-click="getGraph(facebook_url)">Get Graph</a>
           </label>
-            <span ng-show="facebook_id"><label>Facebook ID</label> {{facebook_id}}</span>
+          <span ng-show="facebook_id">
+            <label>Facebook ID</label> {{facebook_id}}</span>
         </li>
         <!-- <li class="">
           <label>Generate
