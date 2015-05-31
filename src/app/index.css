@@ -14,9 +14,14 @@
 }
 
 .alert-wrapper {
-  height:60px;
+  min-height:60px;
+  margin-bottom: 6px;
 }
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
-}  
+}
+
+.btn {
+  margin-bottom: 3px;
+}
