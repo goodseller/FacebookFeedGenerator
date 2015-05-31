@@ -22,23 +22,30 @@
   <!-- endbuild -->
 </head>
 
-<body>
+<body ng-cloak>
   <!--[if lt IE 10]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
   <div class="container" ng-controller="MainCtrl">
-
     <div class="jumbotron">
       <h1>Facebook Feed Generator</h1>
+
       <p class="lead">
         This app can help you to generate their facebook feed link by simply input the URL in just 2 steps!
       </p>
+
+      <div class="alert-wrapper">
+        <div ng-show="suc" class="alert alert-success" role="alert">{{suc}}</div>
+        <div ng-show="info" class="alert alert-info" role="alert">{{info}}</div>
+        <div ng-show="err" class="alert alert-danger" role="alert">{{err}}</div>
+      </div>
+
       <ol>
         <li>
           <label>Facebook URL
             <input type="text" name="facebook_url" placeholder="Enter URL Here!" ng-change="facebookURLChanged(facebook_url)" ng-model="facebook_url">
-            <a class="btn btn-success" ng-click="getGraph(facebook_url)">Get Graph</a>
+            <!-- <a class="btn btn-success" ng-click="getGraph(facebook_url)">Get Graph</a> -->
           </label>
           <span ng-show="facebook_id">
             <label>Facebook ID</label> {{facebook_id}}</span>
@@ -51,10 +58,10 @@
         <li class="">
           <div>
             <label>Facebook Feed Link
-              <input type="text" name="feed_url" value="" ng-value="feed_url">
+              <input type="text" name="feed_url" value="" ng-value="feed_url" readonly>
             </label>
-            <a class="btn btn-success" ng-href="http://feedly.com/i/subscription/feed/{{feed_url}}" target="_blank">Subscribe in Feedly</a>
-            <a class="btn btn-success" id="copy-button" data-clipboard-text="{{feed_url}}" title="Click to copy me.">Copy to Clipboard</a>
+            <a class="btn btn-success" ng-disabled="!feed_url" ng-href="http://feedly.com/i/subscription/feed/{{feed_url}}" target="_blank">Subscribe in Feedly</a>
+            <a class="btn btn-success" ng-disabled="!feed_url" id="copy-button" data-clipboard-text="{{feed_url}}" title="Click to copy me.">Copy to Clipboard</a>
           </div>
         </li>
       </ol>

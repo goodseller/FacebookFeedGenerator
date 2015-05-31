@@ -5,15 +5,32 @@ angular.module('facebookFeed')
     $scope.getGraph = getGraph;
     $scope.facebookURLChanged = facebookURLChanged;
 
+    function clearAlerts() {
+      $scope.err = undefined;
+      $scope.suc = undefined;
+      $scope.info = undefined;
+    }
 
     function facebookURLChanged(facebook_url) {
+      // clear all last values
+      clearAlerts();
+      $scope.feed_url = undefined;
+      $scope.facebook_id = undefined;
+
       $timeout.cancel($scope.timer);
       $scope.timer = $timeout(function() {
-        getGraph(facebook_url);
+        if (facebook_url) {
+          getGraph(facebook_url);
+        }
       }, 300);
     }
 
     function getGraph(facebook_url) {
+      if (!/^https?:\/\//.test(facebook_url)) {
+        //pending http for no prepending url string
+        facebook_url = 'http://' + facebook_url;
+      }
+
       $http.get(encodeURI('https://graph.facebook.com/' + facebook_url))
         .success(successCallback)
         .error(errorCallback);
@@ -21,22 +38,28 @@ angular.module('facebookFeed')
 
     function successCallback(data, status) {
       $scope.rep = data;
-      facebookId(data['id']);
+      facebookIdRsp(data['id']);
       feedLink();
-      // $scope.error = data['error'];
     }
 
-    function praseRes(res) {
-
+    function errorCallback(data, status) {
+      $scope.err =
+        'Unable to get data from Facebook. Please check your connection or input.';
     }
 
-    function facebookId(id) {
-      if (typeof id == 'string' || typeof id == 'number') {
+    function facebookIdRsp(id) {
+      id = String(id);
+
+      if (/^\d+$/.test(id)) {
         $scope.facebook_id = id;
+
+        clearAlerts();
+        $scope.suc =
+          'Facebook Feed Link generated successfully! Please click the buttons on Step 2.';
         return $scope.facebook_id;
-      } else if (typeof $scope.facebook_id == 'string' || typeof $scope.facebook_id ==
-        'number') {
-        return $scope.feed_link;
+      } else {
+        clearAlerts();
+        $scope.err = 'Invalid value! Please check the URL input.';
       }
     }
 
@@ -49,31 +72,10 @@ angular.module('facebookFeed')
       }
     }
 
-    // {
-    //    "error": {
-    //       "message": "Unsupported get request. Please read the Graph API documentation at https://developers.facebook.com/docs/graph-api",
-    //       "type": "GraphMethodException",
-    //       "code": 100
-    //    }
-    // }
-
-
-
-    function errorCallback(data, status) {
-
-    }
-
     var client = new ZeroClipboard(document.getElementById("copy-button"));
 
     client.on("ready", function(readyEvent) {
-      // alert( "ZeroClipboard SWF is ready!" );
-
-      client.on("aftercopy", function(event) {
-        // `this` === `client`
-        // `event.target` === the element that was clicked
-        // event.target.style.display = "none";
-        // alert("Copied text to clipboard: " + event.data["text/plain"]);
-      });
+      client.on("aftercopy", function(event) {});
     });
 
   });
