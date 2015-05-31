@@ -1,0 +1,15 @@
+'use strict';
+
+var gulp = require('gulp');
+
+var paths = gulp.paths;
+
+// watch changes
+gulp.task('plumber', ['inject'], function() {
+	gulp.watch([
+		paths.src + '/*.html',
+		paths.src + '/{app,components}/**/*.css',
+		paths.src + '/{app,components}/**/*.js',
+		'bower.json'
+	], ['inject']);
+});
