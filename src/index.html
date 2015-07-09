@@ -22,14 +22,41 @@
   <!-- endbuild -->
 </head>
 
-<body ng-cloak>
+<body ng-cloak ng-controller="MainCtrl">
   <!--[if lt IE 10]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
+  <div class="container" id="important">
+    <h3>
+      <span ng-click="importantMoreShow = !importantMoreShow">
+        <span class="label label-danger">Important</span>
+        <a href="#">
+          <small>
+            Feed Link before <strong>2015-06-23</strong> is no longer supported for Facebook API version 2.3.
+            Please <strong>RE-SUBSCRIBE ALL</strong> of your old links through step 1 and 2.
+            I am trying to contact both Feedly and Facebook for this issue.
+            <strong>This site might NOT be SUPPORTED currently.</strong>
+            Please come back later.
+          </small>
+        </a>
+      </span>
+    </h3>
 
-  <div class="container" ng-controller="MainCtrl">
+    <div id="important-more" ng-show="importantMoreShow" style="padding-bottom: 40px">
+      <img src="./facebook_deprecated.png" style="width: 100%;height: auto;" />
+      <span style="float: right">Ref: <a href="https://developers.facebook.com/docs/plugins/activity">Facebook Developers</a></span>
+    </div>
+
+    <p style="float:right">
+      <i>Last Update: <span ng-bind="lastUpd">2015-07-09 23:00 GMT+8</span></i>
+    </p>
+  </div>
+
+
+
+  <div class="container">
     <div class="jumbotron">
-      <h1>Facebook Feed Generator</h1>
+      <h1>Facebook Feed Generator <small>API v2.4</small></h1>
 
       <p class="lead">
         This app can help you to generate their facebook feed link by simply input the URL in just 2 steps!
@@ -59,17 +86,37 @@
             <a class="btn btn-success" ng-disabled="!feed_url" id="copy-button" data-clipboard-text="{{feed_url}}" title="Click to copy me.">Copy to Clipboard</a>
           </div>
         </li>
+        <div
+          class="fb-like"
+          data-share="true"
+          data-width="450"
+          data-show-faces="true">
+        </div>
       </ol>
     </div>
-
-    <hr>
-
-    <div class="footer">
+    <div class="footer" style="float:right">
       <p>With ♥ from <a href="http://goodseller.github.io">goodseller</a></p>
     </div>
 
   </div>
 
+  <script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '1645284389050868',
+        xfbml      : true,
+        version    : 'v2.4'
+      });
+    };
+
+    (function(d, s, id){
+       var js, fjs = d.getElementsByTagName(s)[0];
+       if (d.getElementById(id)) {return;}
+       js = d.createElement(s); js.id = id;
+       js.src = "//connect.facebook.net/en_US/sdk.js";
+       fjs.parentNode.insertBefore(js, fjs);
+     }(document, 'script', 'facebook-jssdk'));
+  </script>
 
   <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
   <!--

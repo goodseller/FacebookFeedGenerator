@@ -2,8 +2,23 @@
 
 angular.module('facebookFeed')
   .controller('MainCtrl', function($scope, $http, $timeout) {
+    var access_token = '1645284389050868|CtGtpZtFYNmLL_VZlthyRnhyQWo';
+    // get it from:
+    // https://graph.facebook.com/oauth/access_token?client_id=1645284389050868&client_secret={{secret}}&grant_type=client_credentials
+
+    var base_url =
+      'https://graph.facebook.com/v2.4/:id/feed/?access_token=:access_token';
+    // v2.4: https://developers.facebook.com/docs/graph-api/reference/v2.4/page/feed
+    // this one >>> no longer support since 2015-06-23, FB API v2.3. 'https://www.facebook.com/feeds/page.php?format=rss20&id=';
+
+
     $scope.getGraph = getGraph;
     $scope.facebookURLChanged = facebookURLChanged;
+    $scope.importantMoreShow = false;
+
+    $scope.lastUpd = (function(moment, lastUpd) {
+      return moment().from(lastUpd);
+    }(moment, '2015-07-09T15:00:00'));
 
     function clearAlerts() {
       $scope.err = undefined;
@@ -31,7 +46,12 @@ angular.module('facebookFeed')
         facebook_url = 'http://' + facebook_url;
       }
 
-      $http.get(encodeURI('https://graph.facebook.com/' + facebook_url))
+      // replace anything after '?' mark
+      facebook_url = facebook_url.replace(/[?][\s\S]*/, '');
+
+      $http.get(encodeURI('https://graph.facebook.com/' + facebook_url +
+          '?access_token=' +
+          access_token))
         .success(successCallback)
         .error(errorCallback);
     }
@@ -64,11 +84,12 @@ angular.module('facebookFeed')
     }
 
     function feedLink() {
-      var baseUrl =
-        'https://www.facebook.com/feeds/page.php?format=rss20&id=';
       if (typeof $scope.facebook_id == 'string' || typeof $scope.facebook_id ==
         'number') {
-        $scope.feed_url = baseUrl + $scope.facebook_id;
+        $scope.feed_url =
+          base_url
+          .replace(':id', $scope.facebook_id)
+          .replace(':access_token', access_token);
       }
     }
 
