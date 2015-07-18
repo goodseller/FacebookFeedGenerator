@@ -46,9 +46,10 @@ angular.module('facebookFeed')
       }
 
 
-      if (/^https?:\/\/www.facebook.com\//.test(facebook_url)) {
+      if (!/^https?:\/\/www.facebook.com\//.test(facebook_url)) {
         clearAlerts();
         $scope.err = 'Invalid URL!';
+        return false;
       }
 
       // replace anything after '?' mark
