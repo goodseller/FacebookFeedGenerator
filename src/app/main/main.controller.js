@@ -6,8 +6,7 @@ angular.module('facebookFeed')
     // get it from:
     // https://graph.facebook.com/oauth/access_token?client_id=1645284389050868&client_secret={{secret}}&grant_type=client_credentials
 
-    var base_url =
-      'https://graph.facebook.com/v2.4/:id/feed/?access_token=:access_token';
+    var base_url = 'http://fbfeedapi.herokuapp.com/';
     // v2.4: https://developers.facebook.com/docs/graph-api/reference/v2.4/page/feed
     // this one >>> no longer support since 2015-06-23, FB API v2.3. 'https://www.facebook.com/feeds/page.php?format=rss20&id=';
 
@@ -18,7 +17,7 @@ angular.module('facebookFeed')
 
     $scope.lastUpd = (function(moment, lastUpd) {
       return moment().from(lastUpd);
-    }(moment, '2015-07-09T15:00:00'));
+    }(moment, '2015-07-18T13:00:00'));
 
     function clearAlerts() {
       $scope.err = undefined;
@@ -35,7 +34,7 @@ angular.module('facebookFeed')
       $timeout.cancel($scope.timer);
       $scope.timer = $timeout(function() {
         if (facebook_url) {
-          getGraph(facebook_url);
+          getGraph(facebook_url.replace(/\/$/, ''));
         }
       }, 300);
     }
@@ -46,25 +45,28 @@ angular.module('facebookFeed')
         facebook_url = 'http://' + facebook_url;
       }
 
+
+      if (/^https?:\/\/www.facebook.com\//.test(facebook_url)) {
+        clearAlerts();
+        $scope.err = 'Invalid URL!';
+      }
+
       // replace anything after '?' mark
       facebook_url = facebook_url.replace(/[?][\s\S]*/, '');
 
       $http.get(encodeURI('https://graph.facebook.com/' + facebook_url +
           '?access_token=' +
           access_token))
-        .success(successCallback)
-        .error(errorCallback);
-    }
-
-    function successCallback(data, status) {
-      $scope.rep = data;
-      facebookIdRsp(data['id']);
-      feedLink();
-    }
-
-    function errorCallback(data, status) {
-      $scope.err =
-        'Unable to get data from Facebook. Please check your connection or input.';
+        .success(function successCallback(data, status) {
+          $scope.rep = data;
+          facebookIdRsp(data['id']);
+          feedLink(facebook_url);
+        })
+        .error(
+          function errorCallback(data, status) {
+            $scope.err =
+              'Unable to get data from Facebook. Please check your connection or input.';
+          });
     }
 
     function facebookIdRsp(id) {
@@ -83,13 +85,10 @@ angular.module('facebookFeed')
       }
     }
 
-    function feedLink() {
+    function feedLink(facebook_url) {
       if (typeof $scope.facebook_id == 'string' || typeof $scope.facebook_id ==
         'number') {
-        $scope.feed_url =
-          base_url
-          .replace(':id', $scope.facebook_id)
-          .replace(':access_token', access_token);
+        $scope.feed_url = base_url + facebook_url
       }
     }
 

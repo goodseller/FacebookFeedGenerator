@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>facebookFeed</title>
+  <title>Facebook Feed</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
   <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -34,9 +34,6 @@
           <small>
             Feed Link before <strong>2015-06-23</strong> is no longer supported for Facebook API version 2.3.
             Please <strong>RE-SUBSCRIBE ALL</strong> of your old links through step 1 and 2.
-            I am trying to contact both Feedly and Facebook for this issue.
-            <strong>This site might NOT be SUPPORTED currently.</strong>
-            Please come back later.
           </small>
         </a>
       </span>
@@ -51,8 +48,6 @@
       <i>Last Update: <span ng-bind="lastUpd">2015-07-09 23:00 GMT+8</span></i>
     </p>
   </div>
-
-
 
   <div class="container">
     <div class="jumbotron">
@@ -82,8 +77,8 @@
             <label>Facebook Feed Link
               <input type="text" name="feed_url" value="" ng-value="feed_url" readonly>
             </label>
-            <a class="btn btn-success" ng-disabled="!feed_url" ng-href="http://feedly.com/i/subscription/feed/{{feed_url}}" target="_blank">Subscribe in Feedly</a>
-            <a class="btn btn-success" ng-disabled="!feed_url" id="copy-button" data-clipboard-text="{{feed_url}}" title="Click to copy me.">Copy to Clipboard</a>
+            <a class="btn btn-success" ng-show="feed_url" ng-href="http://feedly.com/i/subscription/feed/{{feed_url}}" target="_blank">Subscribe in Feedly</a>
+            <a class="btn btn-success" ng-show="feed_url" id="copy-button" data-clipboard-text="{{feed_url}}" title="Click to copy me.">Copy to Clipboard</a>
           </div>
         </li>
         <div

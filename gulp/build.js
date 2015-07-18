@@ -63,9 +63,10 @@ gulp.task('html', ['inject', 'partials'], function () {
 });
 
 gulp.task('images', function () {
-  return gulp.src(paths.src + '/assets/images/**/*')
-    .pipe(gulp.dest(paths.dist + '/assets/images/'));
+  return gulp.src(paths.src + '/images/**/*')
+    .pipe(gulp.dest(paths.dist + '/images/'));
 });
+
 
 gulp.task('fonts', function () {
   return gulp.src($.mainBowerFiles())
